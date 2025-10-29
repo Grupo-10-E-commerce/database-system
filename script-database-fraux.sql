@@ -1,5 +1,5 @@
 CREATE DATABASE Fraux;
-use Fraux;
+USE Fraux;
 
 CREATE TABLE cargo (
     id_cargo INT NOT NULL AUTO_INCREMENT,
@@ -7,20 +7,20 @@ CREATE TABLE cargo (
     descricao VARCHAR(255),
     PRIMARY KEY (id_cargo)
 );
+INSERT INTO cargo (nome, descricao) VALUES
+	('admnistrador', 'usuário que possui todas as funcionalidades do sistema liberadas. Usuário é automaticamente criado ao cadastrar uma nova empresa.');
 
 CREATE TABLE empresa (
     id_empresa INT NOT NULL AUTO_INCREMENT,
     razao_social VARCHAR(100) NOT NULL,
     cnpj CHAR(14) NOT NULL,
-    codigo VARCHAR(45) NOT NULL,
     PRIMARY KEY (id_empresa)
 );
 
 CREATE TABLE usuario (
     id_usuario INT NOT NULL AUTO_INCREMENT,
-    nome VARCHAR(30) NOT NULL,
-    sobrenome VARCHAR(45) NOT NULL,
-    email VARCHAR(45) NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(50) NOT NULL,
     senha VARCHAR(45) NOT NULL,
     id_empresa INT NOT NULL,
     id_cargo INT NOT NULL,
@@ -40,27 +40,24 @@ CREATE TABLE avaliacao (
 
 CREATE TABLE log (
     id_log INT NOT NULL AUTO_INCREMENT,
+	id_compra_log Int NOT NULL,
     data_hora DATETIME NOT NULL,
-    texto TEXT,
-    nivel_severidade VARCHAR(45),
-    id_empresa INT NOT NULL,
-    PRIMARY KEY (id_log),
-    FOREIGN KEY (id_empresa) REFERENCES empresa(id_empresa)
+    acao VARCHAR(200),
+	nivel_severidade VARCHAR(45),
+    mensagem TEXT,
+    PRIMARY KEY (id_log)
 );
 
 CREATE TABLE compra (
     id_compra INT NOT NULL AUTO_INCREMENT,
+	transacao_id VARCHAR(45),
     id_empresa INT NOT NULL,
-    id_comprador INT NOT NULL,
     data_hora_transacao DATETIME NOT NULL,
     valor_transacao DECIMAL(7,2) NOT NULL,
-    metodo_pagamento VARCHAR(45) NOT NULL,
+	tipo_transacao VARCHAR(45) NOT NULL,
     cidade VARCHAR(45),
-    tipo_transacao VARCHAR(45) NOT NULL,
-    transacao_id VARCHAR(45),
     fraude TINYINT NOT NULL,
-    PRIMARY KEY (id_compra),
-    FOREIGN KEY (id_empresa) REFERENCES empresa(id_empresa)
+    PRIMARY KEY (id_compra)
 );
 
 CREATE TABLE alerta_fraude (
